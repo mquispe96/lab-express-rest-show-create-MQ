@@ -99,6 +99,28 @@ logs.post('/', (req, res) => {
   }
 });
 
+//Update
+logs.put('/:id', (req, res) => {
+  const {id} = req.params;
+  if (logsData[id]) {
+    logsData[id] = req.body;
+    res.status(200).json(logsData[id]);
+  } else {
+    res.status(404).json({error: `No log with input id: ${id}`});
+  }
+});
+
+//Delete
+logs.delete('/:id', (req, res) => {
+  const {id} = req.params;
+  if (logsData[id]) {
+    logsData.splice(id, 1);
+    res.redirect('/');
+  } else {
+    res.status(404).json({error: `No log with input id: ${id}`});
+  }
+});
+
 //Main 404 error page
 logs.get('*', (req, res) => res.status(404).send('Invalid Route'));
 
