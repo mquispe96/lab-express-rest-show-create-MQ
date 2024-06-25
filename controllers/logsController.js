@@ -102,7 +102,8 @@ logs.post('/', (req, res) => {
 //Update
 logs.put('/:id', (req, res) => {
   const {id} = req.params;
-  if (logsData[id]) {
+  const checkPost = verifyPost(req.body);
+  if (logsData[id] && checkPost) {
     logsData[id] = req.body;
     res.status(200).json(logsData[id]);
   } else {
