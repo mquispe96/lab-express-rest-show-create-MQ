@@ -4,7 +4,13 @@ const logsData = require('../models/logModel.js');
 
 //Helper Function to verify post
 const verifyPost = body => {
-  if(body.captainName && body.title && body.post && body.mistakesWereMadeToday && body.daysSinceLastCrisis){
+  if (
+    body.captainName &&
+    body.title &&
+    body.post &&
+    body.mistakesWereMadeToday &&
+    body.daysSinceLastCrisis
+  ) {
     const checkList = [];
     checkList.push(/^[a-zA-Z\s]+$/.test(body.captainName));
     checkList.push(/^[a-zA-Z\s]+$/.test(body.title));
@@ -12,11 +18,10 @@ const verifyPost = body => {
     checkList.push(/^[true|false]+$/i.test(body.mistakesWereMadeToday));
     checkList.push(/^[\d]+$/.test(body.daysSinceLastCrisis));
     return checkList.every(bool => bool === true);
-  }
-  else{
+  } else {
     return false;
   }
-}
+};
 
 //Helper Function to process data base on query input
 const queryLogic = (data, query) => {
@@ -56,12 +61,10 @@ logs.get('/', (req, res) => {
   } else {
     const processedData = queryLogic(logsData, req.query);
     if (!processedData) {
-      res
-        .status(404)
-        .json({
-          error:
-            'Query received did not match any of our functionalities, please try something different.',
-        });
+      res.status(404).json({
+        error:
+          'Query received did not match any of our functionalities, please try something different.',
+      });
     } else if (processedData.length === 0) {
       res
         .status(200)
@@ -78,20 +81,21 @@ logs.get('/:id', (req, res) => {
   if (logsData[id]) {
     res.status(200).json(logsData[id]);
   } else {
-    res.status(404).json({error: 'No log belongs to id received.'});
+    res.redirect('/');
   }
 });
 
 //Create
 logs.post('/', (req, res) => {
   const checkPost = verifyPost(req.body);
-  if(checkPost){
+  if (checkPost) {
     console.log('This is req.body', req.body);
     logsData.push(req.body);
     res.status(200).json(logsData[logsData.length - 1]);
-  }
-  else{
-    res.status(404).json({error: 'Data entered is not valid or formatted incorrectly.'})
+  } else {
+    res
+      .status(404)
+      .json({error: 'Data entered is not valid or formatted incorrectly.'});
   }
 });
 
