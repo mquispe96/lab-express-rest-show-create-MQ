@@ -88,27 +88,27 @@ logs.get('/:id', (req, res) => {
 //Create
 logs.post('/', (req, res) => {
   const checkPost = verifyPost(req.body);
-  if (checkPost) {
+  // if (checkPost) {
     console.log('This is req.body', req.body);
     logsData.push(req.body);
     res.status(200).json(logsData[logsData.length - 1]);
-  } else {
-    res
-      .status(404)
-      .json({error: 'Data entered is not valid or formatted incorrectly.'});
-  }
+  // } else {
+  //   res
+  //     .status(404)
+  //     .json({error: 'Data entered is not valid or formatted incorrectly.'});
+  // }
 });
 
 //Update
 logs.put('/:id', (req, res) => {
   const {id} = req.params;
   const checkPost = verifyPost(req.body);
-  if (logsData[id] && checkPost) {
+  // if (logsData[id] && checkPost) {
     logsData[id] = req.body;
     res.status(200).json(logsData[id]);
-  } else {
-    res.status(404).json({error: `No log with input id: ${id}`});
-  }
+  // } else {
+  //   res.status(404).json({error: `No log with input id: ${id}`});
+  // }
 });
 
 //Delete
